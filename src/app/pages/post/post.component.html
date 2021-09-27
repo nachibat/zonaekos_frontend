@@ -8,14 +8,15 @@
     <div class="col-md-6 animate__animated animate__fadeIn">
         <!--Detalle-->
         <h3 class="cursor">{{ pelicula.title }}</h3>
-        <div class="row cursor">
+        <!-- Se quita la parte de las estrellas por la migracion -->
+        <!-- <div class="row cursor">
             <div class="col">
                 <star-rating [value]=pelicula.vote_average totalstars=10 checkedcolor=yellow uncheckedcolor=grey size=15px readonly=false></star-rating>
             </div>
             <div class="col text-white">
                 {{ pelicula.vote_average | number:'1.1-2' }}
             </div>
-        </div>
+        </div> -->
         <div class="row">
             <div class="col">
                 <span *ngFor="let genero of genre" class="badge badge-secondary mr-1 cursor">{{ genero }}</span>

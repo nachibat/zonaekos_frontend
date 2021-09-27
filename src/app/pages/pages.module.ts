@@ -8,7 +8,7 @@ import { SeriesComponent } from './series/series.component';
 import { AnimeComponent } from './anime/anime.component';
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
-import { RatingModule } from 'ng-starrating';
+// import { RatingModule } from 'ng-starrating';
 import { PerfilComponent } from './perfil/perfil.component';
 import { FormsModule } from '@angular/forms';
 import { PoliticasPrivacidadComponent } from './politicas-privacidad/politicas-privacidad.component';
@@ -37,7 +37,7 @@ import { StreamComponent } from './stream/stream.component';
     CommonModule,
     ComponentsModule,
     PipesModule,
-    RatingModule,
+    // RatingModule,
     FormsModule,
     RouterModule
   ]

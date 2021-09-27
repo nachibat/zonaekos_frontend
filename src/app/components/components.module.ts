@@ -4,7 +4,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { SlideshowComponent } from './slideshow/slideshow.component';
 import { PeliculasPosterGridComponent } from './peliculas-poster-grid/peliculas-poster-grid.component';
-import { RatingModule } from 'ng-starrating';
+// import { RatingModule } from 'ng-starrating';
 import { PipesModule } from '../pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
@@ -39,7 +39,7 @@ import { BannerComponent } from './banner/banner.component';
   imports: [
     CommonModule,
     RouterModule,
-    RatingModule,
+    // RatingModule,
     PipesModule,
     FormsModule
   ]

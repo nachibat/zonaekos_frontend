@@ -22,7 +22,6 @@
         "@angular/router": "~10.0.0",
         "@ng-bootstrap/ng-bootstrap": "^8.0.0",
         "angularx-social-login": "^3.5.4",
-        "ng-starrating": "^1.0.20",
         "ng2-adsense": "^9.1.0",
         "rxjs": "~6.5.5",
         "swiper": "^6.3.5",
