@@ -1,0 +1,22 @@
+<div *ngIf="series.length > 0" class="row">
+    <div class="col-md-3 mb-3 pelicula pointer animate__animated animate__fadeIn" (click)="onSerieClick(serie)" *ngFor="let serie of series">
+        <img [src]="serie.poster_path | poster" class="img-fluid poster">
+        <div>
+            <h3>{{ serie.title }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="serieService.cargando">
+    <div class="col-md-3 mb-3 animate__animated animate__fadeIn" *ngFor="let item of [1,1,1,1]">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-line"></div>
+    </div>
+</div>
+
+<div *ngIf="series.length === 0 && serieService.cargando === false" class="contenedor">
+    <div class="construccion">
+        <h1 class="animate__animated animate__fadeInDown">No se encontraron series para mostrar</h1>
+        <p class="animate__animated animate__fadeInUp">Estamos teniendo dificultades para mostrar las series. Disculpe las molestias.</p>
+    </div>
+</div>

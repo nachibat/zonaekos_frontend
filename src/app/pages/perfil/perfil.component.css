@@ -1,0 +1,113 @@
+.perfil {
+    background-color: rgb(56, 54, 54);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.leyenda {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.leyenda p {
+    margin-bottom: 0px;
+}
+
+img {
+    width: 180px;
+}
+
+.agrandar {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.agrandar:hover {
+    -webkit-transform: scale(1.25);
+    -moz-transform: scale(1.25);
+    -ms-transform: scale(1.25);
+    -o-transform: scale(1.25);
+    transform: scale(1.25);
+}
+
+.btn-edit {
+    color: gray;
+}
+
+.btn-edit i {
+    font-size: 30px;
+}
+
+.btn-guardar {
+    font-size: 25px;
+    color: green;
+}
+
+.btn-cancel {
+    font-size: 25px;
+    color: red;
+}
+
+.avatar-movil {
+    display: none;
+}
+
+.avatar-img {
+    border-radius: 50%;
+}
+
+@media only screen and (max-width: 768px) {
+    .perfil {
+        margin-top: 70px !important;
+        padding-top: 50px !important;
+    }
+    .avatar {
+        display: none;
+    }
+    .movil {
+        position: relative;
+    }
+    .movil .row {
+        width: 370px;
+    }
+    .btn-movil {
+        width: 80px !important;
+    }
+    .avatar-movil {
+        position: absolute;
+        top: -50%;
+        left: 55%;
+        display: block;
+    }
+    .avatar-movil img {
+        width: 100px;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .perfil {
+        margin-top: 70px !important;
+        padding-top: 50px !important;
+    }
+    .avatar {
+        display: none;
+    }
+    .movil {
+        position: relative;
+    }
+    .movil .row {
+        width: 330px;
+    }
+    .btn-movil {
+        width: 80px !important;
+    }
+    .avatar-movil {
+        position: absolute;
+        top: -50%;
+        left: 55%;
+        display: block;
+    }
+    .avatar-movil img {
+        width: 100px;
+    }
+}

@@ -1,0 +1,36 @@
+.footer {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.footer a {
+    color: rgb(71, 70, 70);
+    text-emphasis: none;
+}
+
+.footer a:hover {
+    text-decoration: none;
+}
+
+.web {
+    display: block;
+}
+
+.movil {
+    display: none;
+}
+
+.footer p {
+    color: rgb(71, 70, 70);
+    margin-bottom: 2px;
+}
+
+@media only screen and (max-width: 768px) {
+    .web {
+        display: none;
+    }
+    .movil {
+        display: block;
+    }
+}

@@ -1,0 +1,223 @@
+<!-- Listado de series y capitulos a editar -->
+<div class="listados">
+
+    <div class="tarjeta-tabla justify-content-between align-items-center d-flex py-4 px-4">
+        <div>
+            <button (click)="showModalForm('agregar')" class="btn btn-dark btn-sm" title="Agregar">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" title="Buscar">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" title="Reiniciar listado">
+                <i class="fas fa-redo-alt"></i>
+            </button>
+            <button (click)="switchReporte()" *ngIf="!reporteCapitulos" class="btn btn-dark btn-sm" title="Reporte de series">
+                <i class="fas fa-clipboard-list"></i>
+            </button>
+            <button (click)="switchReporte()" *ngIf="reporteCapitulos" class="btn btn-dark btn-sm" title="Volver a listado de series">
+                <i class="fas fa-undo-alt"></i>
+            </button>
+        </div>
+        <span *ngIf="!reporteCapitulos">Listado de series</span>
+        <span *ngIf="reporteCapitulos">Reporte de capitulos</span>
+        <div>
+            <button class="btn btn-dark btn-sm" (click)="cambiarListado('peliculas')" title="Listado de peliculas">
+                <i class="fas fa-film"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" disabled="true" (click)="cambiarListado('series')" title="Listado de series">
+                <i class="fas fa-video"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="cambiarListado('juegos')" title="Listado de juegos">
+                <i class="fas fa-ghost"></i>
+            </button>
+        </div>
+    </div>
+
+    <table *ngIf="!reporteCapitulos" class="tabla table table-light table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Poster</th>
+                <th scope="col">Título</th>
+                <th scope="col">Descripción</th>
+                <th class="acciones" scope="col">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let serie of series">
+                <td scope="row">
+                    <img [src]="serie.poster_path | poster" class="img-fluid poster">
+                </td>
+                <td>{{ serie.title }}</td>
+                <td>{{ serie.overview | slice:0:140 }}...</td>
+                <td>
+                    <button (click)="showModalCapitulo(serie, 'agregar')" class="btn btn-success btn-sm px-2" title="Agregar capitulo a la serie">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button (click)="showModal(serie._id, serie.title)" class="btn btn-primary btn-sm px-2" title="Listado de capítulos">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button (click)="showModalForm('modificar', serie)" class="btn btn-warning btn-sm px-2" title="Modificar serie">
+                        <i class="far fa-edit"></i>
+                    </button>
+                    <button (click)="consultaBajaSerie(serie._id)" class="btn btn-danger btn-sm px-2" title="Eliminar serie">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <table *ngIf="reporteCapitulos" class="tabla table table-light table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Poster</th>
+                <th scope="col">Serie</th>
+                <th scope="col">Capitulo</th>
+                <th class="acciones" scope="col">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let capRep of listadoReporte">
+                <td scope="row">
+                    <img [src]="capRep.serie.poster_path | poster" class="img-fluid poster reporte">
+                </td>
+                <td>{{ capRep.serie.title }}</td>
+                <td>{{ capRep.season }}x{{ capRep.chapter }}</td>
+                <td>
+                    <button (click)="restaurarCapitulo(capRep._id)" class="boton-ok" title="Restaurar capitulo">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Modal de listado de capitulos -->
+<div class="modal-listado" *ngIf="modalListado" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="header">
+            <div class="modal-title">
+                <h5>Listado de capitulos: "{{ tituloSerie }}"</h5>
+            </div>
+            <div class="modal-close"><i (click)="closeModal()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo">
+            <div *ngFor="let temp of temporadas; let i = index">
+                <div class="listado" *ngFor="let cap of temporadas[i]">
+                    <p>{{ i + 1 }}x{{ cap.chapter }}</p>
+                    <p *ngIf="!cap.title">{{ cap.serie.title }}</p>
+                    <p *ngIf="cap.title">{{ cap.title }}</p>
+                    <p *ngIf="cap.overview">{{ cap.overview | slice:0:50 }} ...</p>
+                    <div class="botones">
+                        <button (click)="showModalCapitulo(cap, 'modificar')" class="btn btn-warning btn-sm" title="Modificar capitulo">
+                            <i class="far fa-edit"></i>
+                        </button>
+                        <button (click)="showModalConfirm('bajaCapitulo', 'Está seguro que desea eliminar el capitulo?', cap._id)" class="btn btn-danger btn-sm" title="Eliminar capitulo">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
+</div>
+
+<!-- Modal para agregar/modificar series -->
+<div class="modal-form-serie" *ngIf="modalFormSerie" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="header">
+            <div class="modal-title">
+                <h5>{{ tituloForm | titlecase}} serie</h5>
+            </div>
+            <div class="modal-close"><i (click)="closeModal()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo formulario">
+            <form #fSerie="ngForm" (ngSubmit)="agregarModificarSerie(fSerie, tituloForm)">
+                <input class="form-control" [(ngModel)]="serie.title" required type="text" name="title" placeholder="Titulo">
+                <input class="form-control" [(ngModel)]="serie.original_title" type="text" name="original_title" placeholder="Titulo Original">
+                <input class="form-control" [(ngModel)]="serie.overview" type="text" name="overview" placeholder="Descripción">
+                <input class="form-control" [(ngModel)]="serie.categoria" type="text" name="categoria" placeholder="Categoría">
+                <input class="form-control" [(ngModel)]="serie.genre" required type="text" name="genre" placeholder="Género">
+                <input class="form-control" [(ngModel)]="serie.poster_path" type="text" name="poster_path" placeholder="Poster">
+                <input class="form-control" [(ngModel)]="serie.backdrop_path" type="text" name="backdrop_path" placeholder="Fondo">
+                <input type="submit" class="btn btn-dark btn-block login_btn" value="{{ tituloForm | titlecase }} Serie">
+            </form>
+        </div>
+        <div class="footer"></div>
+    </div>
+</div>
+
+<!-- Modal para agregar/modificar capitulos -->
+<div class="modal-form-capitulo" *ngIf="modalFormCapitulo" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="header">
+            <div class="modal-title">
+                <h5 *ngIf="tituloFormCapitulo === 'agregar'">Agregar capitulo a {{ serieModificar.title }}</h5>
+            </div>
+            <div class="modal-close"><i (click)="closeModal()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo formulario">
+            <form #fCapitulo="ngForm" (ngSubmit)="agregarModificarCapitulo(fCapitulo)">
+                <input class="form-control" type="number" [(ngModel)]="capitulo.season" required name="season" placeholder="Número de Temporada">
+                <input class="form-control" type="number" [(ngModel)]="capitulo.chapter" required name="chapter" placeholder="Número de Capítulo">
+                <input class="form-control" type="text" [(ngModel)]="capitulo.title" name="title" placeholder="Titulo">
+                <input class="form-control" type="text" [(ngModel)]="capitulo.overview" name="overview" placeholder="Descripción">
+                <input class="form-control" type="text" [(ngModel)]="capitulo.stream_link_ori" name="stream_link_ori" placeholder="Link audio original">
+                <input class="form-control" type="text" [(ngModel)]="capitulo.stream_link_lat" name="stream_link_lat" placeholder="Link audio latino">
+                <input class="form-control" type="date" [(ngModel)]="capitulo.release_date" name="release_date" placeholder="Fecha estreno capitulo">
+                <input type="submit" class="btn btn-dark btn-block login_btn" value="{{ tituloFormCapitulo | titlecase}} Capítulo">
+            </form>
+        </div>
+        <div class="footer"></div>
+    </div>
+</div>
+
+<!-- Modal Info -->
+<div class="modal-info" *ngIf="modalInfo">
+    <div class="modal-container">
+        <div class="header">
+            <div class="modal-title">
+                <h5>Advertencia</h5>
+            </div>
+            <div class="modal-close"><i (click)="closeModal()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo">
+            <h6>{{ cuerpoModalInfo }}</h6>
+        </div>
+        <div class="footer">
+            <button (click)="closeModal()" class="btn btn-dark">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Confirm -->
+<div class="modal-confirm" *ngIf="modalConfirm.estado">
+    <div class="modal-container">
+        <div class="header">
+            <div class="modal-title">
+                <h5>Advertencia</h5>
+            </div>
+            <div class="modal-close"><i (click)="modalConfirm.estado = false" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo text-center">
+            <h6>{{ modalConfirm.body }}</h6>
+        </div>
+        <div class="footer text-center">
+            <button *ngIf="modalConfirm.tipo === 'bajaCapitulo'" (click)="bajaCapitulo(modalConfirm.data)" class="btn btn-dark">OK</button>
+            <button *ngIf="modalConfirm.tipo === 'bajaSerie'" (click)="bajaSerie(modalConfirm.data)" class="btn btn-dark">OK</button>
+            <button *ngIf="modalConfirm.tipo === 'modificarCapitulo'" (click)="modificarCapitulo()" class="btn btn-dark">OK</button>
+            <button (click)="modalConfirm.estado = false" class="btn btn-dark">Cancelar</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+.imagen {
+    width: 70%;
+}
+
+.cursor {
+    cursor: default !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .imagen {
+        width: 100%;
+    }
+}
+
+.titulo_original {
+    font-size: 14px;
+}
+
+.btn {
+    border: 1px solid rgb(0, 0, 7);
+    color: gray;
+    background: rgb(0, 0, 7);
+    border-radius: 40px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline;
+    width: 160px;
+}
+
+@media only screen and (max-width: 360px) {
+    .btn {
+        width: 100%;
+        display: block;
+        margin-bottom: 15px;
+    }
+    .link-caidos {
+        width: 100% !important;
+        display: block;
+        margin-top: 25px;
+    }
+}
+
+.btn:hover {
+    border: 1px solid rgb(16, 16, 17);
+    color: lightgray;
+    background: rgb(16, 16, 17);
+}
+
+.leyenda {
+    color: gray;
+    font-size: 12px;
+}
+
+.link-caidos {
+    width: 200px;
+}
+
+.confirm button {
+    width: 70px;
+    background-color: #008000;
+    border-color: #008000;
+    color: #ffffff;
+}
+
+.confirm button:nth-child(2) {
+    background-color: #800000;
+    border-color: #800000;
+}

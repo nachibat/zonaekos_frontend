@@ -1,0 +1,17 @@
+<h2>Busqueda: <span>{{ termino }}</span></h2>
+<hr>
+<div *ngIf="peliculas.length > 0">
+    <h5>Peliculas</h5>
+    <app-peliculas-poster-grid [movies]="peliculas"></app-peliculas-poster-grid>
+</div>
+<div *ngIf="series.length > 0">
+    <h5>Series</h5>
+    <app-series-poster-grid [series]="series"></app-series-poster-grid>
+</div>
+<div class="cuerpo" *ngIf="(peliculas.length === 0 && series.length === 0) && (!peliculaService.cargando && !serieService.cargando)">
+    <h1 class="animate__animated animate__fadeIn">No hay resultados</h1>
+</div>
+
+<div *ngIf="peliculaService.cargando || serieService.cargando" class="cuerpo">
+    <div class="spinner"></div>
+</div>

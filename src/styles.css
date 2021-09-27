@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: #14161E;
+}
+
+:root {
+    scrollbar-color: rgba(255, 255, 255, .2) #14161e !important;
+    scrollbar-width: thin !important;
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+    background: #14161E;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    border-right: 2px solid #14161E;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 200;
+    color: white;
+}
+
+p {
+    color: white;
+}
+
+hr {
+    color: white;
+}
+
+.navbar-brand {
+    font-weight: 200;
+    color: #bd4c5f !important;
+}
+
+.btn-outline-success {
+    border-color: #bd4c5f !important;
+    ;
+    color: #bd4c5f !important;
+    ;
+}
+
+.btn-outline-success:hover {
+    background-color: #272a36;
+    color: white !important;
+}
+
+.block {
+    display: block;
+}

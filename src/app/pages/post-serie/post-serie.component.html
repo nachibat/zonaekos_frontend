@@ -1,0 +1,119 @@
+<div class="fondo mt-5" *ngIf="serie" [ngStyle]="{
+    'background': 'radial-gradient(farthest-side, rgba(0, 0, 0, 0.8), rgba(20, 22, 30, 1)), url(https://image.tmdb.org/t/p/w1280'+ serie.backdrop_path +') no-repeat center top',
+    'background-size': 'cover'
+}">
+    <!-- Descripcion -->
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <img [src]="serie.poster_path | poster" class="imagen">
+            <button class="btn regresar" (click)="onRegresar()"><i class="fas fa-undo-alt"></i> Regresar</button>
+        </div>
+        <div class="col-md-9 text-white">
+            <h3 class="mb-2">{{ serie.title }}</h3>
+            <div class="row">
+                <div class="col">
+                    <span *ngFor="let genero of genre" class="mb-3 badge badge-secondary mr-1">{{ genero }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div>Título original: {{ serie.original_title }}</div>
+                    <div>Última modificación: {{ serie.modified | date: 'dd/MM/yyy' }}</div>
+                    <p class="mt-3">{{ serie.overview }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Capitulos -->
+    <div class="row mt-5 capitulos" *ngFor="let temp of temporadas; let i = index">
+        <div class="col-12">
+            <div class="row temporada">
+                <div class="col">
+                    <h4>Temporada {{ i + 1 }}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 container-capitulo" *ngFor="let cap of temporadas[i]">
+                    <div class="capitulo">
+                        <p>{{ i + 1 }}x{{ cap.chapter }}</p>
+                        <span><i (click)="showModal(cap)" class="far fa-play-circle"></i><span>Ver</span></span>
+                        <p *ngIf="!cap.title">{{ cap.serie.title }}</p>
+                        <p *ngIf="cap.title">{{ cap.title }}</p>
+                        <p>Estreno: {{ cap.release_date | date: 'dd/MM/yyy': 'UTC' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal-capitulo" *ngIf="modal" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <!--Como el modal-capitulo entero esta para cerrarse al hacer click, el stopPropagation() hace que al hacer click dentro del modal-container no se cierre-->
+        <div class="header">
+            <div class="modal-title">
+                <h3>{{ capitulo.serie.title }}</h3>
+            </div>
+            <div class="modal-close"><i (click)="closeModal()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo" [ngClass]="noOverview">
+            <h5>{{ capitulo.title }}</h5>
+            <p>{{ capitulo.overview }}</p>
+            <div *ngIf="!capitulo.overview" class="text-center">
+                <h5>No hay descripción disponible</h5>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="fila1 text-center">
+                <button class="btn" [disabled]="btnOri" (click)="verOnline(capitulo.stream_link_ori)"><i class="fas fa-film"></i> Audio Original</button>
+                <button class="btn" [disabled]="btnLat" (click)="verOnline(capitulo.stream_link_lat)"><i class="fas fa-film"></i> Audio Latino</button>
+            </div>
+            <div class="fila2 text-center">
+                <button class="btn" (click)="showModalInfo(capitulo._id, capitulo.reported)">Reportar Links caidos</button>
+            </div>
+            <div class="pie">
+                <p>{{ capitulo.serie.title }} | Temporada {{ capitulo.season }} | Capítulo {{ capitulo.chapter }}</p>
+                <p>{{ capitulo.serie.title }} | {{ capitulo.season }} x {{ capitulo.chapter }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal info -->
+<div class="modal-info" *ngIf="modalInfo">
+    <div class="modal-container info">
+        <div class="header">
+            <div class="modal-title">
+                <h3>Advertencia</h3>
+            </div>
+            <div class="modal-close"><i (click)="closeModalInfo()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo text-center">
+            <p>{{ modalInfoContent }}</p>
+        </div>
+        <div class="footer text-center">
+            <button class="btn" (click)="closeModalInfo()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal answer -->
+<div class="modal-answer" *ngIf="modalAnswer">
+    <div class="modal-container answer">
+        <div class="header">
+            <div class="modal-title">
+                <h3>Advertencia</h3>
+            </div>
+            <div class="modal-close"><i (click)="closeModalAnswer()" class="fas fa-times"></i></div>
+        </div>
+        <div class="cuerpo text-center">
+            <p>Está seguro que desea reportar el enlace?</p>
+        </div>
+        <div class="footer text-center">
+            <button class="btn" (click)="reportarEnlace()">SI</button>
+            <button class="btn" (click)="closeModalAnswer()">NO</button>
+        </div>
+    </div>
+</div>

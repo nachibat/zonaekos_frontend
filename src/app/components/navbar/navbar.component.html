@@ -1,0 +1,148 @@
+<div class="logo mb-3 ocultar">
+    <img src="../../../assets/logo.png">
+</div>
+
+<nav class="navbar navbar-expand-md navbar-dark mb-3 px-0">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <img class="menu-logo mostrar" src="../../../assets/logo.png">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [class]="habilitarMenu" [routerLink]="['/home']"><b>INICIO</b></a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [class]="habilitarMenu" [routerLink]="['/peliculas']"><b>PELICULAS</b></a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [class]="habilitarMenu" [routerLink]="['/series']"><b>SERIES</b></a>
+            </li>
+            <!-- <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [class]="habilitarMenu" [routerLink]="['/anime']"><b>ANIME</b></a>
+            </li> -->
+            <!--<li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/juegos']">Juegos</a>
+            </li>-->
+            <li *ngIf="!perfilLink" class="nav-item mostrar" routerLinkActive="active">
+                <a class="nav-link" (click)="modalLogin(contenido)"><b>INICIAR SESION</b></a>
+            </li>
+            <li *ngIf="perfilLink" class="nav-item mostrar" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/perfil']"><b>PERFIL</b></a>
+            </li>
+            <li *ngIf="perfilLink" class="nav-item mostrar">
+                <a class="nav-link pointer" (click)="logout()"><b>CERRAR SESION</b></a>
+            </li>
+
+        </ul>
+
+        <div class="navbar-nav mb-0 mr-2 px-0">
+            <div class="input-group md-form form-sm form-2 pl-0">
+                <input #txtBuscar (keyup.enter)="buscarPelicula(txtBuscar.value)" class="form-control my-0 py-1 amber-border" type="text" placeholder="Buscar..." aria-label="Search">
+                <div class="input-group-append">
+                    <button class="input-group-text" (click)="buscarPelicula(txtBuscar.value)">
+                        <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!perfilLink" class="navbar-nav nav-item pointer ocultar" (click)="modalLogin(contenido)">
+            <div class="nav-link">
+                <i class="fas fa-user mr-1"></i>
+                <b>INICIAR SESION</b>
+            </div>
+        </div>
+
+        <ul *ngIf="perfilLink" class="navbar-nav">
+            <li class="nav-item nav-avatar">
+                <!-- <a class="nav-link" title="Perfil" [routerLink]="['/perfil']">
+                    <i class="fas fa-user mr-1"></i>
+                </a> -->
+                <img [routerLink]="['/perfil']" *ngIf="usuariosService.usuario && !usuariosService.socialUsers" src="../../../assets/avatars/{{ usuariosService.usuario.img }}" title="Perfil de usuario">
+                <img [routerLink]="['/perfil']" *ngIf="usuariosService.usuario && usuariosService.socialUsers" src="{{ usuariosService.usuario.img }}" title="Perfil de usuario">
+            </li>
+            <li class="nav-item ocultar">
+                <a class="nav-link pointer" title="Cerrar Sesión" (click)="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>
+
+<ng-template #contenido let-modal>
+    <div class="modal-header">
+
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <form #fLogin="ngForm" (ngSubmit)="login(fLogin)">
+        <div class="modal-body">
+
+            <div class="input-group titulo-login mb-3">
+                <h4 class="modal-title text-dark">Login</h4>
+            </div>
+
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-user text-grey" ></i>
+                    </span>
+                </div>
+                <input name="email" class="form-control" [class.is-invalid]="emailControl.invalid && emailControl.touched" type="email" placeholder="email" [(ngModel)]="loginUser.email" required #emailControl="ngModel">
+            </div>
+            <div class="text-danger mb-3" *ngIf="emailControl.invalid && emailControl.touched">El email es obligatorio</div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fas fa-key text-grey" ></i>
+                    </span>
+                </div>
+                <input name="password" class="form-control" [class.is-invalid]="passwordControl.invalid && passwordControl.touched" type="password" placeholder="password" [(ngModel)]="loginUser.password" required #passwordControl="ngModel">
+            </div>
+            <div class="text-danger" *ngIf="passwordControl.invalid && passwordControl.touched">El password es obligatorio</div>
+
+            <div class="input-group mt-5">
+                <input type="submit" class="btn btn-dark btn-block login_btn" value="Login" ngbAutofocus [disabled]="btnDisabled">
+            </div>
+
+            <div class="form-group mt-5 text-center">
+                <p class="social-parrafo">O loguearse con</p>
+                <div class="botones-social">
+                    <button title="Login con Google" class="btn-social btn-google" (click)="googleLogin()"><i class="fab fa-google"></i></button>
+                    <button title="Login con Facebook" class="btn-social btn-facebook" (click)="facebookLogin()"><i class="fab fa-facebook-f"></i></button>
+                    <!--<button title="No disponible" disabled="true" class="btn-social btn-twitter"><i class="fab fa-twitter"></i></button>-->
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+    <div class="modal-footer">
+        <p class="text-dark">Aun no se pueden registrar usuarios nuevos</p>
+    </div>
+</ng-template>
+
+<ng-template #error let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-2 pb-4 px-4 text-center">
+        <div class="text-dark">{{ errorMessage }}</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-dark btn-block login_btn" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template>

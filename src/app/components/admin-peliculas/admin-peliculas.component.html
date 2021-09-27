@@ -1,0 +1,264 @@
+<!-- Listado de peliculas a editar -->
+<div class="listados">
+
+    <div class="tarjeta-tabla justify-content-between align-items-center d-flex py-4 px-4">
+        <div>
+            <button class="btn btn-dark btn-sm" (click)="openModal(modalAdd, 'lg')" title="Agregar">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="openModal(modalTmdb, 'xl')" title="Buscar en TMDB  y agregar">
+                <i class="fas fa-search-plus"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="openModal(modalBuscar, 'lg')" title="Buscar">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="recargar()" title="Reiniciar listado">
+                <i class="fas fa-redo-alt"></i>
+            </button>
+            <button *ngIf="!switchReport" class="btn btn-dark btn-sm" (click)="cambioReporte()" title="Ver Reporte de peliculas">
+                <i class="fas fa-clipboard-list"></i>
+            </button>
+            <button *ngIf="switchReport" class="btn btn-dark btn-sm" (click)="cambioReporte()" title="Volver a Listado de peliculas">
+                <i class="fas fa-undo-alt"></i>
+            </button>
+        </div>
+        <span class="font-weight-bold">{{ titulo }} de películas</span>
+        <div>
+            <button class="btn btn-dark btn-sm" disabled="true" (click)="cambiarListado('peliculas')" title="Listado de peliculas">
+                <i class="fas fa-film"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="cambiarListado('series')" title="Listado de series">
+                <i class="fas fa-video"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="cambiarListado('juegos')" title="Listado de juegos">
+                <i class="fas fa-ghost"></i>
+            </button>
+        </div>
+    </div>
+
+    <table *ngIf="!switchReport" class="tabla table table-light table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Poster</th>
+                <th scope="col">Título</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let pelicula of peliculas">
+                <td scope="row">
+                    <img [src]="pelicula.poster_path | poster" class="img-fluid poster">
+                </td>
+                <td>{{ pelicula.title }}</td>
+                <td>{{ pelicula.overview | slice:0:140 }}...</td>
+                <td>
+                    <button class="btn btn-warning btn-sm px-2" (click)="editarPelicula(pelicula)">
+                        <i class="far fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm px-2" (click)="confirmaBorrar(pelicula._id, pelicula.title)">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <table *ngIf="switchReport" class="lista-reporte tabla table table-light table-hover">
+
+        <thead>
+            <tr>
+                <th scope="col">Poster</th>
+                <th scope="col">Pelicula</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let reporte of reportes">
+                <td scope="row">
+                    <img [src]="reporte.pelicula.poster_path | poster" class="img-fluid poster-reporte" [alt]="reporte.pelicula.title">
+                </td>
+                <td>{{ reporte.pelicula.title }}</td>
+                <td class="grilla-user">
+                    <div><img src="{{ reporte.usuario.img | imgLink }}" class="user-img"></div>
+                    <div>{{ reporte.usuario.fullname }}</div>
+                    <div>{{ reporte.usuario.email }}</div>
+                </td>
+                <td>
+                    <button class="boton-ok" title="Restaurar" (click)="restaurarPelicula(reporte._id)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- Modal agregar/modificar pelicula -->
+<ng-template #modalAdd let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #fAgregarPelicula="ngForm" (ngSubmit)="agregarPelicula(fAgregarPelicula)">
+            <div class="input-group titulo-add mb-3">
+                <h4 class="modal-title text-dark">Agregar Película</h4>
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="title" ngbAutofocus class="form-control" required [(ngModel)]="pelicula.title" placeholder="Título">
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="original_title" class="form-control" [(ngModel)]="pelicula.original_title" placeholder="Título original">
+            </div>
+            <div class="input-group mb-4">
+                <textarea name="overview" class="form-control" [(ngModel)]="pelicula.overview" placeholder="Descripción" rows="3"></textarea>
+            </div>
+            <div class="input-group mb-4">
+                <input name="categoria" class="form-control" [(ngModel)]="pelicula.categoria" placeholder="Categoria">
+            </div>
+            <div class="input-group mb-4">
+                <input type="date" name="release_date" class="form-control" [(ngModel)]="pelicula.release_date" placeholder="Fecha de estreno">
+            </div>
+            <div class="input-group mb-4">
+                <input type="number" name="vote_average" class="form-control" [(ngModel)]="pelicula.vote_average" placeholder="Promedio de votos">
+            </div>
+            <div class="input-group mb-4">
+                <input type="number" name="vote_count" class="form-control" [(ngModel)]="pelicula.vote_count" placeholder="Cantidad de votos">
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="genre" class="form-control" [(ngModel)]="pelicula.genre" placeholder="Géneros">
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="backdrop_path" class="form-control" [(ngModel)]="pelicula.backdrop_path" placeholder="Fondo">
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="poster_path" class="form-control" [(ngModel)]="pelicula.poster_path" placeholder="Poster">
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="stream_link" class="form-control" [(ngModel)]="pelicula.stream_link" placeholder="Link de streaming">
+            </div>
+            <div class="input-group mb-4">
+                <input type="text" name="stream_link_en" class="form-control" [(ngModel)]="pelicula.stream_link_en" placeholder="Link de streaming en inglés">
+            </div>
+            <div class="input-group" *ngIf="!modificarBan">
+                <input type="submit" class="btn btn-dark btn-block login_btn" value="Agregar Película">
+            </div>
+            <div class="input-group" *ngIf="modificarBan">
+                <input type="submit" class="btn btn-dark btn-block login_btn" value="Modificar Película">
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+
+<!-- Modal buscar -->
+<ng-template #modalBuscar let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group titulo-add mb-3">
+            <h4 class="modal-title text-dark">Buscar Películas</h4>
+        </div>
+        <div class="input-group mb-4">
+            <input type="text" #busqueda (keyup.enter)="buscar()" name="busqueda" class="form-control" ngbAutofocus [(ngModel)]="search" placeholder="Buscar...">
+            <div class="input-group-append">
+                <button class="input-group-text amber lighten-3" (click)="buscar()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+
+<!-- Modal busqueda TMDB -->
+<ng-template #modalTmdb let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col">
+                <div class="input-group titulo-add mb-3">
+                    <h4 class="modal-title text-dark">Buscar Película en TMDB</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-4">
+                    <input type="text" #busquedaTmdb (keyup.enter)="buscarTmdb()" name="busquedaTmdb" class="form-control" ngbAutofocus [(ngModel)]="tmdbSearch" placeholder="Buscar...">
+                    <div class="input-group-append">
+                        <button class="input-group-text amber lighten-3" (click)="buscarTmdb()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table *ngIf="peliculasTmdb.length > 0" class="tabla table table-light table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Poster</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pelicula of peliculasTmdb">
+                    <th scope="row">
+                        <img [src]="pelicula.poster_path | poster" class="img-fluid poster">
+                    </th>
+                    <th>{{ pelicula.title }}</th>
+                    <th>{{ pelicula.overview | slice:0:140 }}...</th>
+                    <th>
+                        <button class="btn btn-dark btn-sm px-2 disabled" (click)="cargarPelicula(pelicula)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </th>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</ng-template>
+
+<!-- Modal confirmacion borrar pelicula -->
+<ng-template #modalBorrar let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group titulo-add mb-3">
+            <h4 class="modal-title text-dark">Borrar Película</h4>
+        </div>
+        <div class="input-group mb-2 pregunta">
+            <p class="text-dark">{{ mensajeConfirmacion }}</p>
+        </div>
+        <div class="botones">
+            <button class="boton" (click)="borrarPelicula()"><i class="fas fa-trash"></i>Confirmar</button>
+            <button class="boton" (click)="modal.dismiss()">Cancelar</button>
+        </div>
+    </div>
+</ng-template>

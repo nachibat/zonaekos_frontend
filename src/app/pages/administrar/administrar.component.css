@@ -1,0 +1,94 @@
+.tabla {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.tarjeta-tabla {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+    background-color: rgb(207, 206, 206);
+    text-align: center;
+    padding: 20px 5px;
+}
+
+.tarjeta-tabla .btn {
+    margin-top: 0;
+}
+
+.btn {
+    margin-top: 20px;
+    margin-right: 5px;
+    width: 30px;
+    border-radius: 40px;
+}
+
+.modal-header {
+    padding: 10px
+}
+
+.poster {
+    width: 80px;
+}
+
+.listados {
+    margin-top: 50px;
+}
+
+textarea {
+    resize: none;
+}
+
+.titulo-add {
+    display: block;
+    text-align: center;
+}
+
+.pregunta {
+    font-size: 12px;
+    padding-left: 15px;
+}
+
+.modal-body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.botones {
+    text-align: center;
+}
+
+.boton:nth-child(1) {
+    background-color: rgb(223, 5, 5);
+    border: 1px solid rgb(223, 6, 6);
+    color: rgb(87, 1, 1);
+}
+
+.boton:nth-child(1):hover {
+    background-color: red;
+    border: 1px solid red;
+}
+
+.boton {
+    width: 110px;
+    border: 1px solid rgb(0, 0, 7);
+    color: gray;
+    background: rgb(0, 0, 7);
+    border-radius: 40px;
+    display: inline;
+    margin-left: 10px;
+}
+
+.boton:hover {
+    border: 1px solid rgb(16, 16, 17);
+    color: lightgray;
+    background: rgb(16, 16, 17);
+}
+
+.avatar-img {
+    border-radius: 50%;
+}

@@ -1,0 +1,28 @@
+<h2 class="animate__animated animate__fadeInLeft">Cartelera</h2>
+
+
+<app-slideshow *ngIf="cartelera.length > 0" [movies]="cartelera"></app-slideshow>
+<!-- El loader se hace aca porque en el componente swiper hace conflicto y no anda el swiper -->
+<div *ngIf="peliculasService.cargando" class="contenedor animate__animated animate__zoomIn">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide cargando">
+            <div class="loader">
+                <div class="spinner"></div>
+            </div>
+            <div class="movie-description">
+                <h3>Cargando...</h3>
+                <p> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="mt-5 animate__animated animate__fadeInLeft">Películas</h2>
+
+<app-peliculas-poster-grid [movies]="movies"></app-peliculas-poster-grid>
+
+<h2 class="mt-2 animate__animated animate__fadeInLeft">Series</h2>
+
+<app-series-poster-grid [series]="series"></app-series-poster-grid>
+<!-- <app-series-poster-grid></app-series-poster-grid> -->

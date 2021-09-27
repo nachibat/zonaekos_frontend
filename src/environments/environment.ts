@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  URL: 'http://localhost:3000',
+  // URL: 'https://zonaekos.com:22083,'
+  adsense: {
+    adClient: 'ca-pub-6221256979825970',
+    show: true
+  }
 };
 
 /*

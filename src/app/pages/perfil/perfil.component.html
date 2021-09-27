@@ -1,0 +1,89 @@
+<!-- Perfil del usuario -->
+<div class="perfil mt-5">
+    <div class="row" *ngIf="usuario">
+        <div class="col-4 text-center my-auto avatar">
+            <img *ngIf="!usuarioService.socialUsers" src="/assets/avatars/{{ usuario.img }}" alt="">
+            <img class="avatar-img" *ngIf="usuarioService.socialUsers" src="{{ usuario.img }}" alt="">
+        </div>
+        <div class="col-8 movil">
+            <div class="avatar-movil">
+                <img *ngIf="!usuarioService.socialUsers" src="/assets/avatars/{{ usuario.img }}" alt="">
+                <img class="avatar-img" *ngIf="usuarioService.socialUsers" src="{{ usuario.img }}" alt="">
+            </div>
+
+            <div class="row">
+                <div class="col text-light">Nombre Completo</div>
+            </div>
+            <div class="row">
+                <div class="col-10 input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-user"></i></span>
+                    </div>
+                    <input type="text" [disabled]="!inputName" #fullname name="fullname" class="form-control" [(ngModel)]="usuario.fullname">
+                </div>
+                <div class="col-2 my-auto" *ngIf="!usuarioService.socialUsers">
+                    <div class="row" *ngIf="!inputName">
+                        <div class="col btn-edit agrandar" (click)="edit()" title="Editar">
+                            <i class="far fa-edit"></i>
+                        </div>
+                    </div>
+                    <div class="row btn-movil" *ngIf="inputName">
+                        <div class="col-6 px-1 btn-guardar agrandar" (click)="guardarNombre(usuario._id, usuario.fullname)" title="Guardar">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="col-6 px-1 btn-cancel agrandar" (click)="cancelNombre()" title="Cancelar">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col text-light">Correo electrónico</div>
+            </div>
+            <div class="row">
+                <div class="col-10 input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                    </div>
+                    <input type="text" disabled name="mail" class="form-control" [(ngModel)]="usuario.email">
+                </div>
+                <div class="col-2"></div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col text-light">Perfil</div>
+            </div>
+            <div class="row">
+                <div class="col-10 input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-address-card"></i></span>
+                    </div>
+                    <input *ngIf="usuario.role === 'ADMIN_ROLE'" disabled type="text" name="role" class="form-control" value="Administrador">
+                    <input *ngIf="usuario.role === 'USER_ROLE'" disabled type="text" name="role" class="form-control" value="Usuario Normal">
+                </div>
+                <div *ngIf="administrar" class="col-2">
+                    <div class="row" title="Administrar">
+                        <a class="col btn-edit agrandar" [routerLink]="['/administrar']">
+                            <i class="fas fa-users-cog"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 leyenda" [class]="display">
+            <p>Para que los cambios guardados tomen efecto, es necesario cerrar sesión.</p>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="usuarioService.socialUsers">
+        <div class="col-12 leyenda">
+            <p>Si usted realizó cambios en el perfil de la red social y no se ven reflejados aquí, cierre sesión y vuelva a iniciarla para ver los cambios.</p>
+        </div>
+    </div>
+
+</div>

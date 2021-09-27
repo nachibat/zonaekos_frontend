@@ -1,0 +1,31 @@
+.swiper-container {
+    height: 430px;
+    width: 100%;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: white;
+}
+
+.movie-description {
+    background-color: rgba(0, 0, 0, 0.3);
+    bottom: 0;
+    padding: 5px 15px;
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 991px) {
+    .swiper-container {
+        height: 330px;
+        width: 100%;
+    }
+    .movie-description h3 {
+        font-size: 17px;
+    }
+    .movie-description p {
+        font-size: 15px;
+    }
+}

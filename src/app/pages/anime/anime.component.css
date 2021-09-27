@@ -1,0 +1,13 @@
+.contenedor {
+    padding: 5% 0;
+}
+
+.construccion {
+    padding: 10% 0;
+    width: 100%;
+    text-align: center;
+}
+
+.construccion p {
+    padding-top: 30px;
+}

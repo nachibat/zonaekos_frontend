@@ -1,0 +1,73 @@
+<div class="row mt-5" *ngIf="pelicula">
+    <div class="col-md-6 mb-3 text-center">
+        <!--Imagen-->
+        <img [src]="pelicula.poster_path | poster" [alt]="pelicula.title" class="imagen img-thumbnail animate__animated animate__bounceInLeft">
+        <button *ngIf="reportado" class="btn link-caidos" (click)="consultaReporteLinks()">Links reportados</button>
+        <button *ngIf="!reportado" class="btn link-caidos" (click)="consultaReporteLinks()">Reportar Links caidos</button>
+    </div>
+    <div class="col-md-6 animate__animated animate__fadeIn">
+        <!--Detalle-->
+        <h3 class="cursor">{{ pelicula.title }}</h3>
+        <div class="row cursor">
+            <div class="col">
+                <star-rating [value]=pelicula.vote_average totalstars=10 checkedcolor=yellow uncheckedcolor=grey size=15px readonly=false></star-rating>
+            </div>
+            <div class="col text-white">
+                {{ pelicula.vote_average | number:'1.1-2' }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span *ngFor="let genero of genre" class="badge badge-secondary mr-1 cursor">{{ genero }}</span>
+            </div>
+        </div>
+        <div class="row cursor mt-3">
+            <div class="col text-white">
+                <div>Título original: {{ pelicula.original_title }}</div>
+                <div>Fecha de lanzamiento: {{ pelicula.release_date | date: 'dd/MM/yyy' }}</div>
+                <p class="mt-2">{{ pelicula.overview }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3 text-center">
+                <button *ngIf="pelicula.stream_link_en" (click)="onVerOnline(pelicula.stream_link_en)" class="btn"><i class="fas fa-film"></i> Audio Original</button>
+                <button *ngIf="pelicula.stream_link" (click)="onVerOnline(pelicula.stream_link)" class="btn"><i class="fas fa-film"></i> Audio Latino</button>
+                <button (click)="onRegresar()" class="btn"><i class="fas fa-undo-alt"></i> Regresar</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="leyenda">Al pulsar uno de los botones para ver la película, en ocasiones comenzará la descarga. Probar desde otro navegador (como Firefox) para verla online.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #info let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        <div class="text-dark">{{ infoMessage }}</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-dark btn-block" (click)="modal.close()">OK</button>
+    </div>
+</ng-template>
+
+<ng-template #confirm let-modal>
+    <div class="modal-header">
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        <div class="text-dark">Esta seguro que desea reportar los enlaces caidos?</div>
+    </div>
+    <div class="modal-footer confirm">
+        <button type="button" class="btn btn-dark" (click)="reportarLinks(pelicula._id)">SI</button>
+        <button type="button" ngbAutofocus class="btn btn-dark" (click)="modal.close()">NO</button>
+    </div>
+</ng-template>

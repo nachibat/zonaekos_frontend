@@ -1,0 +1,34 @@
+<div class="row" *ngIf="movies.length > 0">
+    <div class="col-md-3 mb-5 pelicula pointer animate__animated animate__fadeIn" (click)="onMovieClick(movie)" *ngFor="let movie of movies">
+        <img [src]="movie.poster_path | poster" class="img-fluid poster">
+        <div>
+            <h3>{{ movie.title }}</h3>
+            <div class="row">
+                <div class="col-10 text-white">
+                    <star-rating [value]=movie.vote_average totalstars=10 checkedcolor=yellow uncheckedcolor=grey size=14px readonly=false></star-rating>
+                </div>
+                <div class="col-2 text-white">
+                    {{ movie.vote_average | number:'1.1-2' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="peliculaService.cargando">
+    <div class="col-md-3 mb-3 animate__animated animate__fadeIn" *ngFor="let item of [1,1,1,1]">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-title">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+        </div>
+        <div class="skeleton-line"></div>
+    </div>
+</div>
+
+<div *ngIf="movies.length === 0 && peliculaService.cargando === false" class="contenedor">
+    <div class="construccion">
+        <h1 class="animate__animated animate__fadeInDown">No se encontraron peliculas para mostrar</h1>
+        <p class="animate__animated animate__fadeInUp">Estamos teniendo dificultades para mostrar las peliculas. Disculpe las molestias.</p>
+    </div>
+</div>
