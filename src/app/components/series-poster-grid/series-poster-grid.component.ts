@@ -19,7 +19,7 @@ export class SeriesPosterGridComponent implements OnInit {
   }
 
   onSerieClick(serie: Serie): void {
-    this.router.navigate(['/post-serie', serie._id]);
+    this.router.navigate(['/post-serie', serie.uri]);
   }
 
 }

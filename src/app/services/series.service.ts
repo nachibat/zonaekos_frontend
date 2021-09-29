@@ -35,6 +35,10 @@ export class SeriesService {
     return this.http.get<SerieResponse>(`${this.url}/series/${id}`);
   }
 
+  getSerieByUri(uri: string): Observable<SerieResponse> {
+    return this.http.get<SerieResponse>(`${this.url}/series/buscar/uri/${uri}`);
+  }
+
   altaSerie(serie: any): Observable<SerieOK> {
     const token = this.usuarioService.obtenerToken();
     const headers = new HttpHeaders({ token });

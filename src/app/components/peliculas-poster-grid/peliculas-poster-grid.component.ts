@@ -19,7 +19,7 @@ export class PeliculasPosterGridComponent implements OnInit {
   }
 
   onMovieClick(movie: Pelicula): void {
-    this.router.navigate(['/post', movie._id]);
+    this.router.navigate(['/post', movie.uri]);
   }
 
 }

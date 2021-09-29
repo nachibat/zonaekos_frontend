@@ -30,6 +30,10 @@ export class PeliculasService {
     return this.http.get<PeliculaOk>(`${this.url}/pelicula/${id}`);
   }
 
+  getPeliculaByUri(uri: string): Observable<PeliculaOk> {
+    return this.http.get<PeliculaOk>(`${this.url}/pelicula/buscar/${uri}`);
+  }
+
   altaPelicula(pelicula: any): Observable<PeliculaOk> {
     const token = this.usuarioService.obtenerToken();
     const headers = new HttpHeaders({ token });

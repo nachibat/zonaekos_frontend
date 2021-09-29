@@ -31,6 +31,7 @@ export interface Serie {
     backdrop_path: string;
     _id: string;
     title: string;
+    uri: string;
     original_title: string;
     overview: string;
     genre: string;

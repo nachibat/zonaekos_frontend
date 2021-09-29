@@ -15,6 +15,7 @@ export interface Pelicula {
     download_link: string;
     _id: string;
     title: string;
+    uri: string;
     original_title: string;
     overview: string;
     publish_date: Date;

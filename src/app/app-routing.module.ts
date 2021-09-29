@@ -33,11 +33,11 @@ const routes: Routes = [
     component: AnimeComponent
   },
   {
-    path: 'post/:id',
+    path: 'post/:uri',
     component: PostComponent
   },
   {
-    path: 'post-serie/:id',
+    path: 'post-serie/:uri',
     component: PostSerieComponent
   },
   {

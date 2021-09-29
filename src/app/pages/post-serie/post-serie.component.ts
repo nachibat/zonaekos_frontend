@@ -32,9 +32,8 @@ export class PostSerieComponent implements OnInit {
               private usuarioService: UsuariosService) { }
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.params.id;
-    this.cargarCapitulos(id);
-    this.cargarSerie(id);
+    const uri = this.activatedRoute.snapshot.params.uri;    
+    this.cargarSerie(uri);
   }
 
   async cargarCapitulos(id: string): Promise<any> {
@@ -49,10 +48,11 @@ export class PostSerieComponent implements OnInit {
     }
   }
 
-  cargarSerie(id: string): void {
-    this.serieService.getSerie(id).subscribe(resp => {
+  cargarSerie(uri: string): void {
+    this.serieService.getSerieByUri(uri).subscribe(resp => {
       this.serie = resp.serieEncontrada;
       this.genre = this.serie.genre.split('-');
+      this.cargarCapitulos(this.serie._id);
     });
   }
 

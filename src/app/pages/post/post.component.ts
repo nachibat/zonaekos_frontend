@@ -35,15 +35,15 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     // const id = this.activatedRoute.snapshot.params.id;
-    const { id } = this.activatedRoute.snapshot.params;
-    this.updateCanonicalUrl(`https://zonaekos.com/post/${id}/`);
-    this.peliculasService.getPelicula(id).subscribe(resp => {
+    const { uri } = this.activatedRoute.snapshot.params;
+    this.updateCanonicalUrl(`https://zonaekos.com/post/${uri}/`);
+    this.peliculasService.getPeliculaByUri(uri).subscribe(resp => {
       this.pelicula = resp.peliculaDB;
       this.genre = this.pelicula.genre.split('-');
       this.shareService.setFacebookTags(this.pelicula._id, this.pelicula.title, this.pelicula.overview, this.pelicula.poster_path);
-    });
-    this.reporteService.getReporte(id).subscribe(resp => {
-      if (resp.reportes.length > 0) { this.reportado = true; }
+      this.reporteService.getReporte(this.pelicula._id).subscribe(resp => {
+        if (resp.reportes.length > 0) { this.reportado = true; }
+      });
     });
   }
 
@@ -87,7 +87,6 @@ export class PostComponent implements OnInit {
 
   reportarLinks(idPelicula: string): void {
     this.reporteService.reportarLink(idPelicula).subscribe(resp => {
-      console.log(resp);
       this.modal.dismissAll();
       this.reportado = true;
       this.infoMessage = 'Links reportados correctamente. Los links estarán disponibles a la brevedad.';

@@ -38,7 +38,7 @@ export class SlideshowComponent implements OnInit, AfterViewInit {
   }
 
   onMovieClick(movie): void {
-    this.router.navigate(['/post', movie._id]);
+    this.router.navigate(['/post', movie.uri]);
   }
 
 }
