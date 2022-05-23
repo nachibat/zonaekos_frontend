@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  URL: 'http://localhost:3000',
-  // URL: 'https://zonaekos.com:22083,'
+  // URL: 'http://localhost:3000',
+  URL: 'https://zonaekos.com:22083',
   adsense: {
     adClient: 'ca-pub-6221256979825970',
     show: true
