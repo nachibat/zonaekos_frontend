@@ -1,24 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PeliculasResponse, PeliculaOk, Pelicula } from '../interfaces/peliculas-response';
 import { environment } from '../../environments/environment';
 import { UsuariosService } from './usuarios.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PeliculasService {
+export class PeliculasService {  
 
   url = environment.URL;
   public cargando = false;
 
   constructor(private http: HttpClient,
-              private usuarioService: UsuariosService) { }
+              private usuarioService: UsuariosService,
+              @Inject(PLATFORM_ID) private platformId) { }
 
   getPeliculas(desde: number = 0, limite: number = 5, orden: string = ''): Observable<PeliculasResponse> {
     this.cargando = true;
-    return this.http.get<PeliculasResponse>(`${this.url}/peliculas?desde=${desde}&limite=${limite}&orden=${orden}`);
+    if (isPlatformBrowser(this.platformId)) {
+      return this.http.get<PeliculasResponse>(`${this.url}/peliculas?desde=${desde}&limite=${limite}&orden=${orden}`);
+    } else {
+      return this.http.get<PeliculasResponse>(`http://localhost:3000/peliculas?desde=${desde}&limite=${limite}&orden=${orden}`);
+    }
   }
 
   buscarPelicula(desde: number = 0, limite: number = 5, orden: string = '', termino: string): Observable<PeliculasResponse> {

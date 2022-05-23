@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ListUsuariosResponse, UsuariosResponse, Usuario, UsuarioResponse } from '../interfaces/usuarios-response';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { SocialAuthService, GoogleLoginProvider, SocialUser, FacebookLoginProvider } from 'angularx-social-login';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class UsuariosService {
 
   constructor(private http: HttpClient,
               private router: Router,
-              private authService: SocialAuthService) { }
+              private authService: SocialAuthService,
+              @Inject(PLATFORM_ID) private platformId) { }
 
   getUsuarios(): Observable<ListUsuariosResponse> {
     return this.http.get<ListUsuariosResponse>('http://localhost:3000/usuarios?limite=20');
@@ -68,8 +70,10 @@ export class UsuariosService {
   }
 
   obtenerToken(): string {
-    this.token = localStorage.getItem('token');
-    return this.token;
+    if (isPlatformBrowser(this.platformId)) {
+      this.token = localStorage.getItem('token');
+      return this.token;
+    }
   }
 
   async validaToken(): Promise<boolean> {

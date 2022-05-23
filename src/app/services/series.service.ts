@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ListSeriesResponse, ListCapitulos, SerieResponse, SerieOK, CapituloOK, TotalResponse, ReporteCapitulos, SeriesBusqueda } from '../interfaces/series-response';
 import { UsuariosService } from './usuarios.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,16 @@ export class SeriesService {
   public cargando = false;
 
   constructor(private http: HttpClient,
-              private usuarioService: UsuariosService) { }
+              private usuarioService: UsuariosService,
+              @Inject(PLATFORM_ID) private platformId) { }
 
   listadoSeries(desde: number = 0, limite: number = 5, orden: string = ''): Observable<ListSeriesResponse> {
     this.cargando = true;
-    return this.http.get<ListSeriesResponse>(`${this.url}/series?desde=${desde}&limite=${limite}&orden=${orden}`);
+    if (isPlatformBrowser(this.platformId)) {
+      return this.http.get<ListSeriesResponse>(`${this.url}/series?desde=${desde}&limite=${limite}&orden=${orden}`);
+    } else {
+      return this.http.get<ListSeriesResponse>(`http://localhost:3000/series?desde=${desde}&limite=${limite}&orden=${orden}`);
+    }
   }
 
   buscarSerie(desde: number = 0, limite: number = 5, orden: string = '', termino: string): Observable<SeriesBusqueda> {

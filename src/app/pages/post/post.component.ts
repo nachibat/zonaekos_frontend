@@ -40,7 +40,7 @@ export class PostComponent implements OnInit {
     this.peliculasService.getPeliculaByUri(uri).subscribe(resp => {
       this.pelicula = resp.peliculaDB;
       this.genre = this.pelicula.genre.split('-');
-      this.shareService.setFacebookTags(this.pelicula._id, this.pelicula.title, this.pelicula.overview, this.pelicula.poster_path);
+      this.shareService.setFacebookTags(`https://zonaekos.com/post/${uri}/`, this.pelicula.title, this.pelicula.overview, this.pelicula.poster_path);
       this.reporteService.getReporte(this.pelicula._id).subscribe(resp => {
         if (resp.reportes.length > 0) { this.reportado = true; }
       });

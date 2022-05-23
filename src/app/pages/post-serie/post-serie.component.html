@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-3 text-center">
             <img [src]="serie.poster_path | poster" class="imagen">
-            <button class="btn regresar" (click)="onRegresar()"><i class="fas fa-undo-alt"></i> Regresar</button>
+            <button class="boton regresar" (click)="onRegresar()"><i class="fas fa-undo-alt"></i> Regresar</button>
         </div>
         <div class="col-md-9 text-white">
             <h3 class="mb-2">{{ serie.title }}</h3>
@@ -25,17 +25,26 @@
         </div>
     </div>
     <!-- Capitulos -->
-    <div class="row mt-5 capitulos" *ngFor="let temp of temporadas; let i = index">
+    <!-- *ngFor="let temp of temporadas; let i = index" -->
+    <div class="row mt-5 capitulos" >
         <div class="col-12">
             <div class="row temporada">
                 <div class="col">
-                    <h4>Temporada {{ i + 1 }}</h4>
+                    <h4 *ngIf="temporadas.length == 1">Temporada 1</h4>
+                    <div *ngIf="temporadas?.length > 1" class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Temporada {{ dropdownValue + 1 }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" *ngFor="let temp of temporadas; let i = index" (click)="selectDropdown(i)">Temporada {{ i + 1 }}</a>
+                        </div>
+                      </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 container-capitulo" *ngFor="let cap of temporadas[i]">
-                    <div class="capitulo">
-                        <p>{{ i + 1 }}x{{ cap.chapter }}</p>
+                <div class="col-md-3 container-capitulo" *ngFor="let cap of temporadas[dropdownValue]">
+                    <div class="capitulo">                        
+                        <p>{{ dropdownValue + 1 }}x{{ cap.chapter }}</p>
                         <span><i (click)="showModal(cap)" class="far fa-play-circle"></i><span>Ver</span></span>
                         <p *ngIf="!cap.title">{{ cap.serie.title }}</p>
                         <p *ngIf="cap.title">{{ cap.title }}</p>
@@ -67,11 +76,11 @@
         </div>
         <div class="footer">
             <div class="fila1 text-center">
-                <button class="btn" [disabled]="btnOri" (click)="verOnline(capitulo.stream_link_ori)"><i class="fas fa-film"></i> Audio Original</button>
-                <button class="btn" [disabled]="btnLat" (click)="verOnline(capitulo.stream_link_lat)"><i class="fas fa-film"></i> Audio Latino</button>
+                <button class="boton" [disabled]="btnOri" (click)="verOnline(capitulo.stream_link_ori)"><i class="fas fa-film"></i> Audio Original</button>
+                <button class="boton" [disabled]="btnLat" (click)="verOnline(capitulo.stream_link_lat)"><i class="fas fa-film"></i> Audio Latino</button>
             </div>
             <div class="fila2 text-center">
-                <button class="btn" (click)="showModalInfo(capitulo._id, capitulo.reported)">Reportar Links caidos</button>
+                <button class="boton" (click)="showModalInfo(capitulo._id, capitulo.reported)">Reportar Links caidos</button>
             </div>
             <div class="pie">
                 <p>{{ capitulo.serie.title }} | Temporada {{ capitulo.season }} | Capítulo {{ capitulo.chapter }}</p>
@@ -94,7 +103,7 @@
             <p>{{ modalInfoContent }}</p>
         </div>
         <div class="footer text-center">
-            <button class="btn" (click)="closeModalInfo()">Cerrar</button>
+            <button class="boton" (click)="closeModalInfo()">Cerrar</button>
         </div>
     </div>
 </div>
@@ -112,8 +121,8 @@
             <p>Está seguro que desea reportar el enlace?</p>
         </div>
         <div class="footer text-center">
-            <button class="btn" (click)="reportarEnlace()">SI</button>
-            <button class="btn" (click)="closeModalAnswer()">NO</button>
+            <button class="boton" (click)="reportarEnlace()">SI</button>
+            <button class="boton" (click)="closeModalAnswer()">NO</button>
         </div>
     </div>
 </div>

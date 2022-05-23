@@ -16,7 +16,7 @@ export class ShareService {
   constructor(private metaService: Meta) { }
 
   public setFacebookTags(url: string, title: string, description: string, image: string): void {
-    const formatUrl = `https://zonaekos.com/post/${url}/`;
+    const formatUrl = url;
     const imageUrl = `https://image.tmdb.org/t/p/w300${image}`;
     const tags = [
       new MetaTag(this.urlMeta, formatUrl),

@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     ComponentsModule,

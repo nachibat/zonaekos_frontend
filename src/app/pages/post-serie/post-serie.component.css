@@ -183,7 +183,8 @@
     color: rgb(233, 233, 233);
 }
 
-.btn {
+.boton {
+    padding: 5px 0px;
     border: 1px solid rgb(0, 0, 7);
     color: gray;
     background: rgb(0, 0, 7);
@@ -194,6 +195,7 @@
     transition: border .3s, color .3s, background .3s;
 }
 
+.boton:hover,
 .btn:hover {
     border: 1px solid rgb(16, 16, 17);
     color: lightgray;
@@ -204,29 +206,29 @@
     margin-top: 10px;
 }
 
-.fila1 .btn,
-.info .footer .btn {
+.fila1 .boton,
+.info .footer .boton {
     width: 160px;
 }
 
-.modal-answer .btn {
+.modal-answer .boton {
     width: 60px;
 }
 
-.modal-answer .btn:first-child {
+.modal-answer .boton:first-child {
     border: 1px solid green;
     color: white;
     background-color: green;
 }
 
-.modal-answer .btn:last-child {
+.modal-answer .boton:last-child {
     border: 1px solid rgb(136, 0, 0);
     color: white;
     background-color: rgb(136, 0, 0);
     margin-right: 0;
 }
 
-.fila2 .btn {
+.fila2 .boton {
     width: 190px;
 }
 
@@ -267,8 +269,8 @@
     .fila1 {
         margin-top: 25px;
     }
-    .fila1 .btn,
-    .fila2 .btn {
+    .fila1 .boton,
+    .fila2 .boton {
         width: 100%;
         display: block;
     }
@@ -278,4 +280,18 @@
     .pie p:last-child {
         display: block;
     }
+}
+
+.custom-dropdown {
+    background-color: #1b1f22;
+    border-color: #1b1f22;
+    font-weight: 200;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.activo {
+    color: #fff;
+    text-decoration: none;
+    background-color: #131516;
 }

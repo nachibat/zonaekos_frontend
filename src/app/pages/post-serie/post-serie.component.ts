@@ -23,6 +23,7 @@ export class PostSerieComponent implements OnInit {
   public noOverview = 'no-overview';
   public btnOri = true;
   public btnLat = false;
+  public dropdownValue = 0;
 
   private idCapitulo = '';
 
@@ -124,6 +125,10 @@ export class PostSerieComponent implements OnInit {
         this.modalInfo = true;
       }
     );
+  }
+
+  selectDropdown(season: number) {
+    this.dropdownValue = season;
   }
 
 }
